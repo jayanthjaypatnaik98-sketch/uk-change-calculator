@@ -3,13 +3,6 @@ using System.Globalization;
 
 var service = new ChangeBreakdownService();
 
-// Supports two ways of running the app so it's easy for anyone (including an
-// automated build/test process) to use it:
-//   1. dotnet run --project src/ChangeCalculator -- 20 5.50
-//   2. dotnet run --project src/ChangeCalculator      (then answer the prompts)
-decimal amountPaid;
-decimal price;
-
 if (args.Length >= 2)
 {
     if (!TryParseMoney(args[0], out amountPaid) || !TryParseMoney(args[1], out price))
@@ -55,7 +48,7 @@ catch (ArgumentException ex)
 
 return 0;
 
-// Reads a line of console input in a loop until it parses as a valid money value.
+
 static decimal ReadMoney(string prompt)
 {
     while (true)
@@ -72,7 +65,7 @@ static decimal ReadMoney(string prompt)
     }
 }
 
-// Accepts values with or without a leading "£" and with or without decimal places.
+
 static bool TryParseMoney(string? input, out decimal value)
 {
     value = 0m;
