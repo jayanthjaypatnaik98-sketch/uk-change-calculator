@@ -3,73 +3,132 @@
 Given a UK currency amount paid and the price of a product, this app calculates
 the change due and displays it broken down by denomination, largest first.
 
-## Example
-
+## Features
+ 
+- Calculates change using UK denominations.
+- Returns the minimum number of notes and coins.
+- Handles invalid input.
+- Detects insufficient payment.
+- Unit tested using xUnit.
+- Built using .NET 8.
+ 
+## Project Structure
+ 
 ```
-Input:  Paid £20, Price £5.50
-Output:
-Your change is:
-1 x £10
-2 x £2
-1 x 50p
-```
-
-## How it works
-
-- `ChangeBreakdownService` (in `src/ChangeCalculator/ChangeBreakdownService.cs`)
-  contains the core logic. It converts pounds to whole pence up front (to avoid
-  floating point rounding errors with money), then uses a greedy algorithm:
-  for each denomination from largest (£50) to smallest (1p), take as many of
-  that coin/note as fit into the remaining change, then move to the next one.
-- `Program.cs` handles reading input and printing the result. It accepts input
-  either as command-line arguments or via interactive prompts, and understands
-  amounts with or without a "£" sign (e.g. `20`, `£20`, `5.50`, `£5.50`).
-- `ChangeCalculator.Tests` contains xUnit tests, including the exact example
-  from the task description, plus edge cases (exact payment, tiny coin amounts,
-  paying less than the price, large amounts).
-
-## Requirements
-
-- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0) (free download,
-  works on Windows/Mac/Linux)
-
-## How to build and run
-
-Open a terminal in the repository's root folder (the one containing
-`ChangeCalculator.sln`) and run:
-
-```bash
-# Restore and build everything
-dotnet build
-
-# Run interactively (it will ask you for the amount paid and the price)
-dotnet run --project src/ChangeCalculator
-
-# OR run non-interactively by passing the values as arguments
-dotnet run --project src/ChangeCalculator -- 20 5.50
-```
-
-## How to run the tests
-
-```bash
-dotnet test
-```
-
-This runs all 5 unit tests in `ChangeCalculator.Tests`, including a test that
-verifies the exact example given in the task (£20 paid, £5.50 price → 1 x £10,
-2 x £2, 1 x 50p).
-
-## Project structure
-
-```
-ChangeCalculator.sln
 src/
-  ChangeCalculator/
-    ChangeCalculator.csproj
-    Program.cs
-    ChangeBreakdownService.cs
+└── ChangeCalculator
+    ├── Cli
+    ├── Domain
+    ├── Formatting
+    ├── Parsing
+    ├── Services
+    ├── Program.cs
+    └── ChangeCalculator.csproj
+ 
 tests/
-  ChangeCalculator.Tests/
-    ChangeCalculator.Tests.csproj
-    ChangeBreakdownServiceTests.cs
+└── ChangeCalculator.Tests
+    ├── Formatting
+    ├── Parsing
+    ├── Services
+    └── ChangeCalculator.Tests.csproj
+```
+ 
+## Architecture
+ 
+### Cli
+ 
+Responsible for interacting with the user, reading input, and displaying output.
+ 
+### Parsing
+ 
+Validates and converts user input into monetary values.
+ 
+### Services
+ 
+Contains the business logic used to calculate the optimal UK change breakdown.
+ 
+### Formatting
+ 
+Formats the calculation result into a user-friendly console output.
+ 
+### Domain
+ 
+Contains the application's domain models and shared data structures.
+ 
+## Example
+ 
+Input
+ 
+```
+Amount Paid : 20
+Product Price : 5.50
+```
+ 
+Output
+ 
+```
+Change Due : £14.50
+ 
+£10 x 1
+£2 x 2
+50p x 1
+```
+ 
+## Error Handling
+ 
+Examples:
+ 
+```
+Invalid amount paid. Please enter a valid numeric value (e.g. 20 or 20.50).
+```
+ 
+```
+Invalid product price. Please enter a valid numeric value (e.g. 10 or 10.99).
+```
+ 
+```
+Insufficient payment.
+```
+ 
+## Technologies
+ 
+- C#
+- .NET 8
+- xUnit
+ 
+## Design Principles
+ 
+- Separation of Concerns
+- SOLID Principles
+- Dependency Injection
+- Interface-based design
+- Testable architecture
+ 
+## Running the Application
+ 
+Open the solution in Visual Studio.
+ 
+Build the solution.
+ 
+Run the console application.
+ 
+Enter:
+ 
+- Amount Paid
+- Product Price
+ 
+The application displays the optimal UK change breakdown.
+ 
+## Running Tests
+ 
+Visual Studio
+ 
+```
+Test -> Run All Tests
+```
+ 
+or
+ 
+```
+dotnet test
 ```
